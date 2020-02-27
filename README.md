@@ -1,4 +1,4 @@
-# nutsgen
+# pygen
 nuts ml/flow functions for genomics
 
 __install using pip for python 3:__
