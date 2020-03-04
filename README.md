@@ -39,6 +39,7 @@ mypy pygen
 * Clone the repository
 * Checkout a new branch: `git checkout -b my-new-function` (where `my-new-function` is whatever meaningful branch name you come up with)
 * Start working on that branch and test, and add, and commit until the new function is ready for review
+* If you're creating a new file, don't forget to include it in `pygen/__init__.py`. And if your function has a dependency, include it in `setup.py`.
 * Push the branch to the repo: `git push --set-upstream origin my-new-function` (where `my-new-function` is whatever meaningful branch name you came up with)
 * From the master branch on github, click on `create Pull Request` and nominate a reviewer
 * As a reviewer... review, maybe test. Then comment on the pull request or accept it. 
