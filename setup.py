@@ -15,6 +15,8 @@ setup(
         'nutsml',
 	    'pandas-plink',
         'numpy',
-        'pandas'
+        'pandas',
+        'pytest',
+        'mypy'
     ],
 )
