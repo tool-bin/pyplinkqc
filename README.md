@@ -33,3 +33,11 @@ From the command line, navigate to the root directory (`pygen`) and run:
 ```
 mypy pygen
 ```
+
+
+### Contributing
+* Clone the repository
+* Checkout a new branch: `git checkout -b my-new-function` (where `my-new-function` is whatever meaningful branch name you come up with)
+* Start working on that branch and test, and add, and commit until the new function is ready for review
+* Push the branch to the repo: `git push --set-upstream origin my-new-function` (where `my-new-function` is whatever meaningful branch name you came up with)
+* From the master branch on github, click on `create Pull Request` and nominate a reviewer
