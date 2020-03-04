@@ -18,7 +18,7 @@ import pygen
 
 
 ### Testing
-An example for a testable function can be found in `test.py`. This function enables type checking as well as docstring testing.
+An example for a testable function can be found in `exampleTest.py`. This function enables type checking as well as docstring testing.
 
 #### Testing for correctness using the docstring
 Each function should include a docstring that contains information about all in- and output variables as well as a test that should pass.
