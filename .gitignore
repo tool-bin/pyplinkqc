@@ -1,2 +1,4 @@
 .ipynb_checkpoints/*
 pygen/__pycache__/*
+.mypy_cache/
+pygen/.mypy_cache/
