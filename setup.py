@@ -1,14 +1,14 @@
 from setuptools import setup
 
 setup(
-    name='nutsgen',
+    name='pygen',
     version='0.0.1',
     description='genomics processing and analysis',
-    url='https://github.ibm.com/isabeki/pylinklearn.git',
+    url='https://github.ibm.com/aur-genomics/pygen.git',
     author='Isabell Kiral',
     author_email='isa.kiral@gmail.com',
     license='unlicense',
-    packages=['nutsgen'],
+    packages=['pygen'],
     zip_safe=False,
     install_requires=[
         'nutsflow',
