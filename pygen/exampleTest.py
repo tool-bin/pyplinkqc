@@ -7,4 +7,5 @@ def testThisFunction(inputString: str = "default string") -> str:
     >>> testThisFunction(inputString="hello")
     'hello'
     '''
+
     return inputString
