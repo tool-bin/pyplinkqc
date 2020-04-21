@@ -1,0 +1,5 @@
+1. Add docstrings - done
+2. Add functionality to generate a report - done
+3. Break "main" function into 3 separate functions: 1) individual QC, 2) SNP QC, 3) Clean entire dataset - done
+4. Add error handling and file checks 
+5. Add argument parser - done

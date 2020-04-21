@@ -14,6 +14,7 @@ setup(
         'nutsflow',
         'nutsml',
 	    'pandas-plink',
+        'matplotlib',
         'numpy',
         'pandas',
         'pytest',
