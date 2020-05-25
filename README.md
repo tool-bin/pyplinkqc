@@ -1,5 +1,5 @@
 # pygen
-nuts ml/flow functions for genomics
+python toolkit for analysis and modelling of genetic data
 
 __install using pip for python 3:__
 
@@ -13,8 +13,6 @@ __install from a custom branch:__
 ### Usage
 
 import pygen
-
-... actual functionality coming soon
 
 
 ### Testing
@@ -42,4 +40,4 @@ mypy pygen
 * If you're creating a new file, don't forget to include it in `pygen/__init__.py`. And if your function has a dependency, include it in `setup.py`.
 * Push the branch to the repo: `git push --set-upstream origin my-new-function` (where `my-new-function` is whatever meaningful branch name you came up with)
 * From the master branch on github, click on `create Pull Request` and nominate a reviewer
-* As a reviewer... review, maybe test. Then comment on the pull request or accept it. 
+* As a reviewer... review, maybe test. Then comment on the pull request or accept it.
