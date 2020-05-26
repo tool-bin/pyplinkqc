@@ -1,5 +1,5 @@
 from setuptools import setup
-
+import setuptools
 
 # Get the long description from the README file
 def load_readme():
@@ -9,12 +9,12 @@ def load_readme():
 setup(
     name='pygen',
     version='0.0.1',
-    description='genomics processing and analysis',
+    description='genomic data processing and analysis',
     url='https://github.ibm.com/aur-genomics/pygen.git',
     author='Nathalie Willems',
     author_email='nathalie.willems@ibm.com',
     license='unlicense',
-    packages=find_packages(include=['pygen', 'pygen.*']),
+    packages=setuptools.find_packages(include=['pygen', 'pygen.*']),
     zip_safe=False,
     install_requires=[
         'numpy==1.18.1',
