@@ -8,7 +8,7 @@ def load_readme():
 
 setup(
     name='pygen',
-    version='0.0.1',
+    version='0.0.2',
     description='genomic data processing and analysis',
     url='https://github.ibm.com/aur-genomics/pygen.git',
     author='Nathalie Willems',
