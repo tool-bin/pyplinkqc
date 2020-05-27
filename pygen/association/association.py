@@ -27,7 +27,7 @@ def generate_pheno_plink(bfile: str, phenofile: str, outfile: str):
 
 
 def perform_simple_assoc(bfile: str, phenofile: str, outfile: str):
-    command = f"./plink --bfile {bfile} --make-pheno {phenofile} '*' --assoc --out {outfile}"
+    command = f"./plink --bfile {bfile} --assoc --out {outfile}"
     os.system(command)
 
 def perform_adjust_assoc(bfile: str, phenofile: str, outfile: str):

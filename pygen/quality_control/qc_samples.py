@@ -66,6 +66,8 @@ class QcSamples:
             selected = report.relatives_low_call_rate_report(missingness_out, relatedness_out_name, low_call_out)
             print("filtering related individuals with lowest call rates")
             filter.relatedness_filter(bfile=bfile, remove_file=low_call_out, outfile=bfile_out)
+        else:
+            filter.rename_filter(bfile=bfile, outfile=bfile_out)
         return relat_figs
 
     def samples_failed_gen_report(self, bfile: str, write: bool=True, snp_missingness_cutoff: float=0.2, imiss_file: str="plink.imiss", lmiss_file: str="plink.lmiss", sexcheck_file: str="plink.sexcheck", ibd_threshold: float=0.2):
