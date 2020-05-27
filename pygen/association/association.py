@@ -17,7 +17,7 @@ def generate_pheno_plink(bfile: str, phenofile: str, outfile: str):
     os.system(command)
 
 
-def perform_simple_assoc(bfile: str, adjust: bool=False, outfile: str):
+def perform_simple_assoc(bfile: str, outfile: str, adjust: bool=False):
     """Performs 1 df chi-squared allelic assocation test. Assumes the plink binary files contain phenotype annotations (6th column of the .fam/.ped file). PLINK automatically infers qualitative vs quantitative (contains values other than 0, 1, 2 or missing) phenotypes.
 
     Key arguments:
@@ -36,7 +36,7 @@ def perform_simple_assoc(bfile: str, adjust: bool=False, outfile: str):
     os.system(command)
 
 
-def perform_cov_assoc(bfile: str, type: str="linear", cov: str="", outfile: str):
+def perform_cov_assoc(bfile: str, outfile: str, type: str="linear", cov: str=""):
     """Performs linear/logistic regression association analysis.
 
     Key arguments:
