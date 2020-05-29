@@ -171,60 +171,58 @@ def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_thresho
 
     return fig
 
-def sample_failed_report(write=True, miss_threshold=0.2, imiss_file="plink.imiss", lmiss_file="plink.lmiss", sexcheck_file="plink.sexcheck", het_failed_file="heterozygosity_failed.txt", ibd_state=True, ibd_file="pihat_min0.2.genome"):
+
+def sample_failed_report(write=True, miss_threshold=0.2, imiss_file="plink.imiss", lmiss_file="plink.lmiss", sexcheck_file="plink.sexcheck", het_failed_file="heterozygosity_failed.txt", ibd_file="pihat_min0.2.genome"):
     ids = {}
     ids_list = []
 
-    # SNP missingness
-    imiss = pd.read_csv(imiss_file,  delimiter=" ", skipinitialspace=True)
-    lmiss = pd.read_csv(lmiss_file,  delimiter=" ", skipinitialspace=True)
-    ind_missing_filtered = calculate_missingness(imiss, 'F_MISS', miss_threshold)
-    missing_ids = get_sample_ids(imiss, 'IID', ind_missing_filtered)
+    if imiss_file != "":
+        # SNP missingness
+        imiss = pd.read_csv(imiss_file,  delimiter=" ", skipinitialspace=True)
+        lmiss = pd.read_csv(lmiss_file,  delimiter=" ", skipinitialspace=True)
+        ind_missing_filtered = calculate_missingness(imiss, 'F_MISS', miss_threshold)
+        missing_ids = get_sample_ids(imiss, 'IID', ind_missing_filtered)
 
-    ids['missing'] = missing_ids.tolist()
-    ids_list.append(missing_ids.tolist())
+        ids['SNP Missingness'] = missing_ids.tolist()
+        ids_list.append(missing_ids.tolist())
 
-    # mismatched sex
-    sex = pd.read_csv(sexcheck_file, delimiter=" ", skipinitialspace=True)
-    sex_mismatches = sex.loc[sex['STATUS'] == "PROBLEM"]
-    sex_mismatches_counts = sex['STATUS'].value_counts()
-    print("total sex mismatches: ", sex_mismatches.shape[0])
-    sex_mismatches_ids = sex_mismatches['IID'].tolist()
+    if sexcheck_file != "":
+        # mismatched sex
+        sex = pd.read_csv(sexcheck_file, delimiter=" ", skipinitialspace=True)
+        sex_mismatches = sex.loc[sex['STATUS'] == "PROBLEM"]
+        sex_mismatches_counts = sex['STATUS'].value_counts()
+        print("total sex mismatches: ", sex_mismatches.shape[0])
+        sex_mismatches_ids = sex_mismatches['IID'].tolist()
 
-    ids['sex_mismatches'] = sex_mismatches_ids
-    ids_list.append(sex_mismatches_ids)
+        ids['Sex Mismatches'] = sex_mismatches_ids
+        ids_list.append(sex_mismatches_ids)
 
-    # outlying heterozygosity
-    het_failed = pd.read_csv(het_failed_file, delimiter=" ")
-    het_failed_ids = het_failed['IID'].tolist()
-    print("total het failed mismatches: ", len(het_failed_ids))
+    if het_failed_file != "":
+        # outlying heterozygosity
+        het_failed = pd.read_csv(het_failed_file, delimiter=" ")
+        het_failed_ids = het_failed['IID'].tolist()
+        print("total het failed mismatches: ", len(het_failed_ids))
 
-    ids['het_failed'] = het_failed_ids
-    ids_list.append(het_failed_ids)
+        ids['Outlying Heterozygosity'] = het_failed_ids
+        ids_list.append(het_failed_ids)
 
-    if ibd_state:
+    if ibd_state != "":
         # high IBD - pi_hat threshold
         ibd = pd.read_csv(ibd_file, delimiter=" ", skipinitialspace=True)
         print("total ibd failures: ", ibd.shape[0])
         ibd_ids = ibd['IID1'].tolist()
-        ids['relatedness_failed'] = ibd_ids
+        ids['Cryptic Relatedness'] = ibd_ids
         ids_list.append(ibd_ids)
-        # graph everything
-        tests = ['SNP Missingness', 'Sex Mismatches', 'Outlying Heterozygosity', 'Cryptic Relatedness']
-        fail_counts = [len(missing_ids), len(sex_mismatches_ids), len(het_failed_ids), len(ibd_ids)]
-        total_fails = set(x for l in ids_list for x in l)
-        print("total samples failed: {}/{}".format(len(total_fails), imiss.shape[0]))
 
-    else:
-        # graph everything
-        tests = ['SNP Missingness', 'Sex Mismatches', 'Outlying Heterozygosity']
-        fail_counts = [len(missing_ids), len(sex_mismatches_ids), len(het_failed_ids)]
-        total_fails = set(x for l in ids_list for x in l)
-        print("total samples failed: {}/{}".format(len(total_fails), imiss.shape[0]))
+    fail_counts = [len(vals) for key,vals in ids.items()]
+    #total_fails = set(x for l in ids_list for x in l)
+    total_fails = sum(fail_counts)
+    print("total samples failed: {}/{}".format(len(total_fails), imiss.shape[0]))
+
 
     fig = plt.figure(figsize=(8,6))
     plt.tight_layout()
-    plt.bar(x=tests, height=fail_counts)
+    plt.bar(x=ids.keys(), height=fail_counts)
     plt.title("Samples failing QC checks (total: {}/{})".format(len(total_fails), imiss.shape[0]))
     plt.xlabel("QC Test")
     plt.ylabel("Number of samples")

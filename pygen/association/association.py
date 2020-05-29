@@ -13,7 +13,7 @@ def generate_pheno_plink(bfile: str, phenofile: str, outfile: str):
     outfile: str
         prefix for the output plink binary files
     """
-    command = f"./plink --bfile {bfile} --make-pheno {phenofile} '*' --out {outfile} --make-bed"
+    command = "./plink --bfile {} --make-pheno {} '*' --out {} --make-bed".format(bfile, phenofile, outfile)
     os.system(command)
 
 
