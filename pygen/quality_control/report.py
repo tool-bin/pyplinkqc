@@ -206,7 +206,7 @@ def sample_failed_report(write=True, miss_threshold=0.2, imiss_file="plink.imiss
         ids['Outlying Heterozygosity'] = het_failed_ids
         ids_list.append(het_failed_ids)
 
-    if ibd_state != "":
+    if ibd_file != "":
         # high IBD - pi_hat threshold
         ibd = pd.read_csv(ibd_file, delimiter=" ", skipinitialspace=True)
         print("total ibd failures: ", ibd.shape[0])
