@@ -70,7 +70,7 @@ class QcSamples:
             filter.rename_filter(bfile=bfile, outfile=bfile_out)
         return relat_figs
 
-    def samples_failed_gen_report(self, bfile: str, write: bool=True, snp_missingness_cutoff: float=0.2, imiss_file: str="plink.imiss", lmiss_file: str="plink.lmiss", sexcheck_file: str="plink.sexcheck", ibd_threshold: float=0.2):
+    def samples_failed_gen_report(self, bfile: str, write: bool=True, snp_missingness_cutoff: float=0.2, imiss_file: str="plink.imiss", lmiss_file: str="plink.lmiss", sexcheck_file: str="plink.sexcheck", ibd_threshold: float=0.2, ibd_file="relatedness_filtered"):
         print("genating sample qc report")
         ibd_file = "pihat_min{}.genome".format(ibd_threshold)
         het_failed_file = "heterozygosity_failed.txt"
