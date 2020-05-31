@@ -128,39 +128,46 @@ def save_pdf(infile, plots):
         for plot in plots:
             pdf.savefig(plot)
 
-def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_threshold: float=0.00001, hwe_threshold: float=1e-6, lmiss_file: str="plink.lmiss", maf_file: str="MAF_check.frq", hwe_file: str="plink.hwe"):
+def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_threshold: float=0.01, hwe_threshold: float=1e-6, lmiss_file: str="plink.lmiss", maf_file: str="MAF_check.frq", hwe_file: str="plink.hwe"):
     snps = {}
     ids_list = []
-    lmiss = pd.read_csv(lmiss_file, delimiter=" ", skipinitialspace=True)
 
-    missing_snps = lmiss.loc[lmiss['F_MISS'] > miss_threshold]
-    snps['missing_snps'] = missing_snps['SNP'].tolist()
-    ids_list.append(missing_snps['SNP'].tolist())
-    print("total missing snps failed: ", len(missing_snps['SNP'].tolist()))
+    if lmiss_file != "":
+        # SNP missingness
+        lmiss = pd.read_csv(lmiss_file, delimiter=" ", skipinitialspace=True)
+        missing_snps = lmiss.loc[lmiss['F_MISS'] > miss_threshold]
+        snps['Missing SNPs'] = missing_snps['SNP'].tolist()
+        ids_list.append(missing_snps['SNP'].tolist())
+        print("total missing snps failed: ", len(missing_snps['SNP'].tolist()))
 
-    # MAF
-    maf = pd.read_csv(maf_file, delimiter=" ", skipinitialspace=True)
-    rare = maf.loc[maf['MAF'] < maf_threshold]
-    snps['maf'] = rare['SNP'].tolist()
-    ids_list.append(rare['SNP'].tolist())
-    print("total maf snps failed: ", len(rare['SNP'].tolist()))
+    if maf_file != "":
+        # Outlying MAF
+        maf = pd.read_csv(maf_file, delimiter=" ", skipinitialspace=True)
+        rare = maf.loc[maf['MAF'] < maf_threshold]
+        snps['MAF'] = rare['SNP'].tolist()
+        ids_list.append(rare['SNP'].tolist())
+        print("total maf snps failed: ", len(rare['SNP'].tolist()))
 
-    # HWE departures
-    hardy = pd.read_csv(hwe_file, delimiter=" ", skipinitialspace=True)
-    hwe_failed = hardy.loc[hardy['P'] < hwe_threshold]
-    snps['hwe'] = hwe_failed['SNP'].tolist()
-    ids_list.append(hwe_failed['SNP'].tolist())
-    print("total hwe snps failed: ", len(hwe_failed['SNP'].tolist()))
+    if hwe_file != "":
+        # Outlying HWE
+        hardy = pd.read_csv(hwe_file, delimiter=" ", skipinitialspace=True)
+        hwe_failed = hardy.loc[hardy['P'] < hwe_threshold]
+        snps['Outlying HWE'] = hwe_failed['SNP'].tolist()
+        ids_list.append(hwe_failed['SNP'].tolist())
+        print("total hwe snps failed: ", len(hwe_failed['SNP'].tolist()))
 
-    # graph everything
-    tests = ['SNP Missingness', 'Minor Allele Frequency', 'Outlying HWE']
-    fail_counts = [len(missing_snps['SNP'].tolist()), len(rare['SNP'].tolist()), len(hwe_failed['SNP'].tolist())]
-    total_fails = set(x for l in ids_list for x in l)
-    print("total fails: ", len(total_fails))
+    #tests = ['SNP Missingness', 'Minor Allele Frequency', 'Outlying HWE']
+    fail_counts = [len(vals) for key,vals in snps.items()]
+    #total_fails = set(x for l in ids_list for x in l)
+    total_fails = sum(fail_counts)
+    print("total snps failed: {}/{}".format(total_fails, imiss.shape[0]))
+    # fail_counts = [len(missing_snps['SNP'].tolist()), len(rare['SNP'].tolist()), len(hwe_failed['SNP'].tolist())]
+    # total_fails = set(x for l in ids_list for x in l)
+    # print("total fails: ", len(total_fails))
 
     fig = plt.figure(figsize=(8,6))
     plt.tight_layout()
-    plt.bar(x=tests, height=fail_counts)
+    plt.bar(x=list(snps.keys()), height=fail_counts)
     plt.title("SNPs failing QC checks (total: {}/{})".format(len(total_fails), lmiss.shape[0]))
     plt.xlabel("QC Test")
     plt.ylabel("Number of SNPs")
@@ -222,7 +229,7 @@ def sample_failed_report(write=True, miss_threshold=0.2, imiss_file="plink.imiss
 
     fig = plt.figure(figsize=(8,6))
     plt.tight_layout()
-    plt.bar(x=ids.keys(), height=fail_counts)
+    plt.bar(x=list(ids.keys()), height=fail_counts)
     plt.title("Samples failing QC checks (total: {}/{})".format(total_fails, imiss.shape[0]))
     plt.xlabel("QC Test")
     plt.ylabel("Number of samples")
