@@ -217,13 +217,13 @@ def sample_failed_report(write=True, miss_threshold=0.2, imiss_file="plink.imiss
     fail_counts = [len(vals) for key,vals in ids.items()]
     #total_fails = set(x for l in ids_list for x in l)
     total_fails = sum(fail_counts)
-    print("total samples failed: {}/{}".format(len(total_fails), imiss.shape[0]))
+    print("total samples failed: {}/{}".format(total_fails, imiss.shape[0]))
 
 
     fig = plt.figure(figsize=(8,6))
     plt.tight_layout()
     plt.bar(x=ids.keys(), height=fail_counts)
-    plt.title("Samples failing QC checks (total: {}/{})".format(len(total_fails), imiss.shape[0]))
+    plt.title("Samples failing QC checks (total: {}/{})".format(total_fails, imiss.shape[0]))
     plt.xlabel("QC Test")
     plt.ylabel("Number of samples")
     plt.tick_params(axis='x', rotation=90)
