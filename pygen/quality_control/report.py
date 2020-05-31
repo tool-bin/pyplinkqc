@@ -168,7 +168,7 @@ def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_thresho
     fig = plt.figure(figsize=(8,6))
     plt.tight_layout()
     plt.bar(x=list(snps.keys()), height=fail_counts)
-    plt.title("SNPs failing QC checks (total: {}/{})".format(len(total_fails), lmiss.shape[0]))
+    plt.title("SNPs failing QC checks (total: {}/{})".format(total_fails, lmiss.shape[0]))
     plt.xlabel("QC Test")
     plt.ylabel("Number of SNPs")
     plt.tick_params(axis='x', rotation=90)
