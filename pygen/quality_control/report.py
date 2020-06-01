@@ -160,7 +160,7 @@ def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_thresho
     fail_counts = [len(vals) for key,vals in snps.items()]
     #total_fails = set(x for l in ids_list for x in l)
     total_fails = sum(fail_counts)
-    print("total snps failed: {}/{}".format(total_fails, imiss.shape[0]))
+    print("total snps failed: {}/{}".format(total_fails, lmiss.shape[0]))
     # fail_counts = [len(missing_snps['SNP'].tolist()), len(rare['SNP'].tolist()), len(hwe_failed['SNP'].tolist())]
     # total_fails = set(x for l in ids_list for x in l)
     # print("total fails: ", len(total_fails))
