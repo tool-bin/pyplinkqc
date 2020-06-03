@@ -36,7 +36,7 @@ def perform_simple_assoc(bfile: str, outfile: str, adjust: bool=False):
     os.system(command)
 
 
-def perform_cov_assoc(bfile: str, outfile: str, type: str="linear", cov: str=""):
+def perform_cov_assoc(bfile: str, outfile: str, type: str="log", cov: str=""):
     """Performs linear/logistic regression association analysis.
 
     Key arguments:
