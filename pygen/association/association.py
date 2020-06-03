@@ -53,7 +53,7 @@ def perform_cov_assoc(bfile: str, outfile: str, type: str="log", cov: str=""):
     if type=="linear":
         command = "./plink --bfile {} --linear --out {}".format(bfile, outfile)
     elif type=="log":
-        command = "./plink --bfile {} --log --out {}".format(bfile, outfile)
+        command = "./plink --bfile {} --logistic --out {}".format(bfile, outfile)
     else:
         raise Exception("{} is not a supported regression model. Please try linear or log".format(type))
     if cov != "":
