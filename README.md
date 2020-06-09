@@ -1,5 +1,5 @@
 # pygen
-python toolkit for analysis and modelling of genetic data
+python toolkit for running quality control processing and association analysis on genotype call data.
 
 __install using pip for python 3:__
 
@@ -9,11 +9,37 @@ __install from a custom branch:__
 
 `pip3 install git+ssh://git@github.ibm.com/aur-genomics/pygen.git@<branch>`
 
+$ git clone https://github.ibm.com/aur-genomics/pygen.git
+$ python setup.py install
 
 ### Usage
 
-import pygen
+This module has two submodules:
+1. quality_control
+2. association
 
+#### Quality control
+
+This submodule is split into two classes:
+1. QcSnps
+2. QcSamples
+
+Each class expects PLINK binary files as input (bfile - see below). The user should specify the path and name of binary file prefix (e.g HapMap_3_r3_1) as input to the functions, as well as some thresholds where appropriate. Most functions output a figure to analyse the results of the QC step.
+
+In order to import these classes, run the following commands:
+
+$ from pygen import quality_control
+
+Instantiate the classes to run the functions within each class on PLINK data:
+
+$ qc_snps = quality_control.QcSnps()
+$ qc_samples = quality_control.QcSamples()
+
+Run QC steps using the available functions:
+
+$ snps_missing_fig = qc_samples.check_snp_missingness(bfile=binary_file_prefix, snp_missingness_cutoff=0.01)
+
+An example QC pipeline script is provided: qc_ukbb.py.
 
 ### Testing
 An example for a testable function can be found in `exampleTest.py`. This function enables type checking as well as docstring testing.

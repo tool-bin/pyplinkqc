@@ -58,4 +58,4 @@ def perform_cov_assoc(bfile: str, outfile: str, type: str="log", cov: str=""):
         raise Exception("{} is not a supported regression model. Please try linear or log".format(type))
     if cov != "":
         command = command + " --cov {}".format(cov)
-    os.system(command)
+    os.system(command)    
