@@ -1,7 +1,10 @@
-.ipynb_checkpoints/*
-pygen.egg-info/
-pygen/quality_control/pygen.egg-info/
+.ipynb_checkpoints
+**/*.ipynb_checkpoints/
 pygen/__pycache__/*
-pygen/quality_control/__pycache__/*
+__pycache__
+*.egg
+*.egg-info
+build
+lib
 .mypy_cache/
 pygen/.mypy_cache/

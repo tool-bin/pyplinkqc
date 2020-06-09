@@ -1,11 +1,11 @@
 import numpy as np
 import pandas as pd
 import argparse
-import qc_samples as qcsamples
-import qc_snps as qcsnps
-import filter
-import report
-import plot
+from . import qc_samples as qcsamples
+from . import qc_snps as qcsnps
+from . import filter
+from . import report
+from . import plot
 
 ## This script implements quality control procedures on UKBB genotype data
 ## It is specific for UKBB genotype data, and follows on from the QC steps performed by the UKBB team

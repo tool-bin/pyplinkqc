@@ -1,9 +1,9 @@
 import pandas as pd
-import ukbb_cohort as bb
+import ukbcohort as bb
 import os
 
 
-def filtermainqc(pathmain: str, datafields: list) -> list:
+def filter_main_qc(pathmain: str, datafields: list) -> list:
     # Genotype-related QC fields
     # dataFields should include ['22006', '22027', '22021', '22019', '22001', '31']
     main = bb.utils.getColumns(pathToMain=pathmain, dataFields=datafields)
@@ -21,5 +21,21 @@ def filtermainqc(pathmain: str, datafields: list) -> list:
     sex_dis_filtered = sex_filtered[sex_filtered['31-0.0'] == sex_filtered['22001-0.0']]
 
     plink_file = sex_dis_filtered[['eid', 'eid']]
-    plink_file.to_csv("includeEids.txt", sep=" ", index=False, header=False)
+    plink_file.to_csv("includeQCEids.txt", sep=" ", index=False, header=False)
     return sex_dis_filtered['eid']
+
+
+def generate_pheno_plink(bfile: str, phenofile: str, outfile: str):
+    """Generates plink binary files annotated with case-control phenotypes.
+
+    Key arguments:
+    --------------
+    bfile: str
+        prefix for plink binary files (.bed, .bim, .fam)
+    phenofile: str
+        file that contains the IDs of the individuals that have the phenotype - expects FID is the first column and IID is the second column
+    outfile: str
+        prefix for the output plink binary files
+    """
+    command = "./plink --bfile {} --make-pheno {} '*' --out {} --make-bed".format(bfile, phenofile, outfile)
+    os.system(command)

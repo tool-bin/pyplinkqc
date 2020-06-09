@@ -1,8 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import plot
-import report
-import filter
+from . import plot
+from . import report
+from . import filter
 
 class QcSnps:
     def __init__(self):

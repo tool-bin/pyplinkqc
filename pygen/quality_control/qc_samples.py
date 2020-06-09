@@ -1,8 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-import plot
-import report
-import filter
+from . import plot
+from . import report
+from . import filter
 
 class QcSamples:
     def __init__(self):
@@ -66,11 +66,13 @@ class QcSamples:
             selected = report.relatives_low_call_rate_report(missingness_out, relatedness_out_name, low_call_out)
             print("filtering related individuals with lowest call rates")
             filter.relatedness_filter(bfile=bfile, remove_file=low_call_out, outfile=bfile_out)
+        else:
+            filter.rename_filter(bfile=bfile, outfile=bfile_out)
         return relat_figs
 
-    def samples_failed_gen_report(self, bfile: str, write: bool=True, snp_missingness_cutoff: float=0.2, imiss_file: str="plink.imiss", lmiss_file: str="plink.lmiss", sexcheck_file: str="plink.sexcheck", ibd_threshold: float=0.2):
+    def samples_failed_gen_report(self, bfile: str, write: bool=True, snp_missingness_cutoff: float=0.2, imiss_file: str="plink.imiss", lmiss_file: str="plink.lmiss", sexcheck_file: str="plink.sexcheck", ibd_threshold: float=0.2, ibd_file: str="pihat_min0.2.genome"):
         print("genating sample qc report")
-        ibd_file = "pihat_min{}.genome".format(ibd_threshold)
+        #ibd_file = "pihat_min{}.genome".format(ibd_threshold)
         het_failed_file = "heterozygosity_failed.txt"
         sample_failed_fig = report.sample_failed_report(write=write, miss_threshold=snp_missingness_cutoff, imiss_file=imiss_file, lmiss_file=lmiss_file, sexcheck_file=sexcheck_file, het_failed_file=het_failed_file, ibd_file=ibd_file)
         self.figures.append(sample_failed_fig)
