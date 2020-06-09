@@ -73,8 +73,7 @@ def relatedness_filter(bfile: str, remove_file: str, outfile: str):
     command = "./plink --bfile {} --remove {} --make-bed --out {}".format(bfile, remove_file, outfile)
     os.system(command)
 
-def founders_filter(bfile):
-    outfile = bfile + "_exclude_nonfounders"
+def founders_filter(bfile: str, outfile: str):
     command = "./plink --bfile {} --filter-founders --silent --make-bed --out {}".format(bfile, outfile)
     os.system(command)
     return outfile
@@ -90,3 +89,7 @@ def sample_ids_filter(df, column, filtered):
     ids'''
     ids = df[~df[column].isin(filtered[column].tolist())][column]
     return ids
+
+def rename_filter(bfile: str, outfile: str):
+    command = "./plink --bfile {} --silent --make-bed --out {}".format(bfile, outfile)
+    os.command(command)
