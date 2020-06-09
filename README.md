@@ -9,8 +9,8 @@ __install from a custom branch:__
 
 `pip3 install git+ssh://git@github.ibm.com/aur-genomics/pygen.git@<branch>`
 
-$ git clone https://github.ibm.com/aur-genomics/pygen.git
-$ python setup.py install
+`$ git clone https://github.ibm.com/aur-genomics/pygen.git`
+`$ python setup.py install`
 
 ### Usage
 
@@ -28,16 +28,20 @@ Each class expects PLINK binary files as input (bfile - see below). The user sho
 
 In order to import these classes, run the following commands:
 
-$ from pygen import quality_control
+`$ from pygen import quality_control`
 
 Instantiate the classes to run the functions within each class on PLINK data:
 
-$ qc_snps = quality_control.QcSnps()
-$ qc_samples = quality_control.QcSamples()
+`$ qc_snps = quality_control.QcSnps()`
+`$ qc_samples = quality_control.QcSamples()`
 
 Run QC steps using the available functions:
 
-$ snps_missing_fig = qc_samples.check_snp_missingness(bfile=binary_file_prefix, snp_missingness_cutoff=0.01)
+`$ snps_missing_fig = qc_samples.check_snp_missingness(bfile=binary_file_prefix, snp_missingness_cutoff=0.01)`
+
+#### Assocation
+
+This submodule implements basic association testing using PLINK.
 
 An example QC pipeline script is provided: qc_ukbb.py.
 
