@@ -9,6 +9,8 @@ __install from a custom branch:__
 
 `pip3 install git+ssh://git@github.ibm.com/aur-genomics/pygen.git@<branch>`
 
+__install by cloning branch and running setup.py:__
+
 `$ git clone https://github.ibm.com/aur-genomics/pygen.git`
 
 `$ python setup.py install`
