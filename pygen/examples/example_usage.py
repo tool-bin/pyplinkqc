@@ -2,15 +2,12 @@ import qc_samples as qcsamples
 import qc_snps as qcsnps
 
 
-#%%
 bfile="HapMap_3_r3_1"
-## Set parameters to those used in Ben Neale's documentation
 snp_missingness_cutoff=0.2
 get_autosomal=False
 maf_threshold=0.01
 hwe_threshold=1e-10
 
-#%%
 
 qc_samples = qcsamples.QcSamples()
 
@@ -24,7 +21,6 @@ related_fig = qc_samples.check_cryptic_relatedness(bfile="heterozygosity_filtere
 
 qc_samples.samples_failed_gen_report(bfile=bfile, snp_missingness_cutoff=snp_missingness_cutoff)
 
-#%%
 qc_snps = qcsnps.QcSnps()
 
 snps_missing_fig = qc_snps.check_snp_missingness(bfile=bfile, snp_missingness_cutoff=snp_missingness_cutoff)

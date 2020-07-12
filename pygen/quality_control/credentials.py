@@ -1,3 +1,0 @@
-applicationId=''
-userName=''
-password=''

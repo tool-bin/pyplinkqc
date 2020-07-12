@@ -6,8 +6,6 @@ from pygen.quality_control import qc_snps as qcsnps
 from pygen.association import association
 from pygen import quality_control
 
-#import utils
-
 ## This script implements quality control procedures on UKBB genotype data. It uses the default thresholds provided by Ben Neale's lab (http://www.nealelab.is/blog/2017/9/11/details-and-considerations-of-the-uk-biobank-gwas)
 
 ##Steps:

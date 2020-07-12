@@ -42,11 +42,11 @@ Run QC steps using the available functions:
 
 `$ snps_missing_fig = qc_samples.check_snp_missingness(bfile=binary_file_prefix, snp_missingness_cutoff=0.01)`
 
+An example script that implements a QC pipeline is given in the "examples" directory.
+
 #### Assocation
 
-This submodule implements basic association testing using PLINK.
-
-An example QC pipeline script is provided: qc_ukbb.py.
+This submodule implements basic association testing for GWAS studies.
 
 ### Testing
 An example for a testable function can be found in `exampleTest.py`. This function enables type checking as well as docstring testing.
