@@ -9,27 +9,11 @@ from matplotlib.backends.backend_pdf import PdfPages
 
 # analysis functions
 def calculate_missingness(df, column, threshold):
-    '''Identify SNPs with a missingness rate below a certain threshold.
-    :param df: dataframe containing all SNPs and their missingness rate
-    :param column: column that contains missingness rate values within df
-    :param threshold: threshold for removing SNPs above missingness rate
-    :return: Pandas DataFrame object
-    :rtype object
-    >>> calculate_missingess(missigness_df, 'F_MISS', 0.05)
-    missing'''
     missing = df.loc[df[column] < threshold]
     print("total removed: ", df.shape[0] - missing.shape[0])
     return missing
 
 def get_sample_ids(df, column, filtered):
-    '''Return sample IDs from one dataframe (df) that are present in another dataframe (filtered).
-    :param df: dataframe that contains the samples to be filtered
-    :param column: column that contains the sample IDs
-    :param filtered: dataframe that contains the filtered samples
-    :return: Pandas DataFrame object
-    :rtype object
-    >>> get_sample_ids(original_df, 'iid', fitlered_df)
-    ids'''
     ids = df[~df[column].isin(filtered[column].tolist())][column]
     return ids
 
