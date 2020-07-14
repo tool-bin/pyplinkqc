@@ -142,9 +142,14 @@ def check_cryptic_relatedness(bfile: str="heterozygosity_filtered",
         filter.rename_filter(bfile, bfile_out)
     return relat_figs
 
-def gen_qc_samples_report(bfile: str, write: bool=True, snp_missingness_threshold: float=0.2,
-imissfile: str="plink.imiss", lmissfile: str="plink.lmiss", sexcheckfile: str="plink.sexcheck",
-ibd_threshold: float=0.2, ibdfile: str="pihat_min0.2.genome", figures_list: list=figures):
+def gen_qc_samples_report(bfile: str, write: bool=True,
+                          snp_missingness_threshold: float=0.2,
+                          imissfile: str="plink.imiss",
+                          lmissfile: str="plink.lmiss",
+                          sexcheckfile: str="plink.sexcheck",
+                          ibd_threshold: float=0.2,
+                          ibdfile: str="pihat_min0.2.genome",
+                          figures_list: list=figures):
     """Generated QC report for samples.
 
     Key arguments:
