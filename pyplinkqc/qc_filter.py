@@ -5,6 +5,7 @@ import subprocess
 
 plinkoutput = "pyplinkqc_output.txt"
 plinkerror = "pyplinkqc_errors.txt"
+plink_file = "plink"
 
 def run_plink(bfile: str, *flags: str, make_bed: bool=True):
     """Run plink binary with flag arguments.
@@ -91,7 +92,7 @@ def individuals(bfile: str, keepfile: str, outfile: str):
     run_plink(bfile, f'-- keep {keepfile}', f'--out {outfile}')
 
 
-def impute_sex(bfile: str, outfile: str=bfile+"_sex_imputed"):
+def impute_sex(bfile: str, outfile: str):
     """Change sex assignment based on imputed values.
 
     Imputed values are calculated from X chromosome inbreeding coefficients.
@@ -109,7 +110,7 @@ def impute_sex(bfile: str, outfile: str=bfile+"_sex_imputed"):
     """
     # command = "./plink --bfile {} --impute-sex --silent --make-bed --out {}".format(bfile, outfile)
     # os.system(command)
-    run_plink(bfile: str, '--impute sex', f'--out {outfile}')
+    run_plink(bfile, '--impute sex', f'--out {outfile}')
 
 def remove_sex(bfile: str, removefile: str, outfile: str):
     """Remove individuals with sex discrepancies.
