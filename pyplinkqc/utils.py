@@ -62,5 +62,5 @@ def generate_phenofile_fromfam(ids_file: str, fam_file: str, pheno_outfile: str=
     eids = [id.strip() for id in ids]
     fam = pd.read_csv(fam_file, delimiter = " ", usecols = [0, 1], names = ['fid', 'iid'])
     fam['pheno'] = fam['iid'].apply(lambda x: '1' if x in eids else '0')
-    fam.to_csv(pheno_outfile, sep=" ", index=False, headers=False)
+    fam.to_csv(pheno_outfile, sep=" ", index=False, header=False)
     return eids
