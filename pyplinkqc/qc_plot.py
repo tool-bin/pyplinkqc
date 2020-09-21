@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
 from matplotlib.backends.backend_pdf import PdfPages
+import os
 
 def plot_missingness_hist(missfile: str="plink"):
     """Plot histograms of SNP missingness for samples and SNPs.

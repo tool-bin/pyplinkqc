@@ -34,7 +34,7 @@ def check_snp_missingness(bfile: str, miss_out: str="plink",
     --------
         Figure object
     """
-    qc_report.missingness_report(bfile, miss_out)
+    qc_report.missingness(bfile, miss_out)
     missing_figs = qc_plot.plot_missingness_hist(miss_out)
     qc_filter.samples_genotypes(bfile, snp_missingness_threshold, bfile_out)
     return missing_figs
