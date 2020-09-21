@@ -45,7 +45,10 @@ def generate_phenofile_fromfam(ids_file: str, fam_file: str, pheno_outfile: str=
     cases.
 
     Produces a phenotype file where the first column is FID, second column is IID,
-    and third column is 0 if control and 1 if case.
+    and third column is 1 if control and 2 if case.
+    From plink --make-pheno docs:
+    "Case/control phenotypes are expected to be encoded as 1=unaffected (control),
+    2=affected (case)"
 
     Key arguments:
     --------------
@@ -64,6 +67,6 @@ def generate_phenofile_fromfam(ids_file: str, fam_file: str, pheno_outfile: str=
     fam = pd.read_csv(fam_file, delimiter = " ", usecols = [0, 1], names = ['fid', 'iid'])
     # fam['pheno'] = fam['iid'].apply(lambda x: '1' if x in eids else '0')
     famcopy = fam.copy()
-    famcopy['pheno'] = np.where((famcopy['iid'].isin(eids)), 1, 0)
+    famcopy['pheno'] = np.where((famcopy['iid'].isin(eids)), 2, 1)
     famcopy.to_csv(pheno_outfile, sep=" ", index=False, header=False)
     return eids
