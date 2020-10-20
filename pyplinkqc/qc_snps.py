@@ -13,7 +13,7 @@ from . import qc_filter
 # hwe_filtered = "hwe_filtered"
 
 def check_snp_missingness(bfile: str, miss_out: str="plink",
-                          snp_missingness_cutoff: float=0.2,
+                          snp_missingness_threshold: float=0.2,
                           bfile_out: str="snp_missingness_filtered"):
     """Filters SNPs with high missingness rates.
 
@@ -33,9 +33,9 @@ def check_snp_missingness(bfile: str, miss_out: str="plink",
     missing_figs: object
         matplotlib figure object showing SNP missingness rates
     """
-    qc_report.missingness_report(bfile=bfile, outfile=miss_out)
-    missing_figs = qc_plot.plot_missingness_hist(miss_file=miss_out)
-    qc_filter.snp_genotype_filter(bfile=bfile, threshold=snp_missingness_cutoff,
+    qc_report.missingness(bfile=bfile, outfile=miss_out)
+    missing_figs = qc_plot.missingness_hist(missfile=miss_out)
+    qc_filter.snp_genotypes(bfile=bfile, threshold=snp_missingness_threshold,
                                outfile=bfile_out)
     return missing_figs
 
@@ -73,8 +73,8 @@ def check_maf(bfile: str="snp_missingness_filtered", get_autosomal: bool=False,
                                     outfile=bfile_tmp)
         bfile = bfile_tmp
     qc_report.maf_check(bfile=bfile, outfile="MAF_check")
-    maf_check_figs = qc_plot.maf_hist(file=maf_check)
-    maf_filtered = qc_filter.maf_filter(bfile=bfile, threshold=maf_threshold,
+    maf_check_figs = qc_plot.maf_hist(maffile=maf_check)
+    maf_filtered = qc_filter.maf(bfile=bfile, threshold=maf_threshold,
                                      outfile=bfile_out)
     maf_drop_figs = qc_plot.maf_dropped_hist()
     return maf_check_figs, maf_drop_figs
@@ -103,12 +103,12 @@ def check_hwe(bfile: str="maf_filtered", hwe_check: str="plink.hwe",
         matplotlib figure object showing SNP HWE results
     """
     qc_report.hardy_weinberg(bfile=bfile)
-    hwe_figs = qc_plot.hwe_hist(file=hwe_check, threshold=hwe_threshold)
+    hwe_figs = qc_plot.hwe_hist(hwefile=hwe_check, threshold=hwe_threshold)
     qc_filter.hardy_weinberg_test(bfile=bfile, threshold=hwe_threshold,
                                  control=control, outfile=bfile_out)
     return hwe_figs
 
-def snps_failed_gen_report(bfile: str, figures_list: list, write: bool=False,
+def gen_qc_snps_report(bfile: str, figures_list: list, write: bool=False,
                            snp_missingness_threshold: float=0.2,
                            maf_threshold: float=0.01, hwe_threshold: float=1e-6,
                            lmiss_file: str="plink.lmiss",
