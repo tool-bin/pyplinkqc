@@ -48,7 +48,7 @@ def generate_phenofile_fromfam(ids_file: str, fam_file: str, pheno_outfile: str=
     and third column is 1 if control and 2 if case.
     From plink --make-pheno docs:
     "Case/control phenotypes are expected to be encoded as 1=unaffected (control),
-    2=affected (case)"
+        2=affected (case)"
 
     Key arguments:
     --------------

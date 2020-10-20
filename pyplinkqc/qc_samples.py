@@ -35,7 +35,7 @@ def check_snp_missingness(bfile: str, miss_out: str="plink",
         Figure object
     """
     qc_report.missingness(bfile, miss_out)
-    missing_figs = qc_plot.plot_missingness_hist(miss_out)
+    missing_figs = qc_plot.missingness_hist(miss_out)
     qc_filter.samples_genotypes(bfile, snp_missingness_threshold, bfile_out)
     return missing_figs
 
@@ -58,8 +58,8 @@ def check_sex_discrepancy(bfile: str="sample_missingness_filtered",
         Figure object
     """
     qc_report.check_sex(bfile)
-    problems_df = qc_report.check_sex_report(sexcheck_out)
-    check_sex_figs = qc_plot.plot_sexcheck_hist(sexcheck_out)
+    problems_df = qc_report.check_sex(sexcheck_out)
+    check_sex_figs = qc_plot.sexcheck_hist(sexcheck_out)
     sex_discrepancy = "sex_discrepancy.txt"
     qc_filter.remove_sex(bfile, sex_discrepancy, bfile_out)
     return check_sex_figs
@@ -98,8 +98,8 @@ def check_heterozygosity_rate(bfile: str="sex_discrepancy_filtered",
                       correlation_method)
     ld_in = ld_out + ".het"
     het_failed = "heterozygosity_failed.txt"
-    het_check_df = qc_report.heterozygosity_ind_report(ld_in, het_failed)
-    het_check_fig = qc_plot.plot_het_hist(het_check_df)
+    het_check_df = qc_report.heterozygosity(ld_in, het_failed)
+    het_check_fig = qc_plot.het_hist(het_check_df)
     hetero_filtered = qc_filter.heterozygosity_snps(bfile, het_failed, bfile_out)
     return het_check_fig
 
@@ -126,14 +126,14 @@ def check_cryptic_relatedness(bfile: str="heterozygosity_filtered",
     """
     snpfile_in = snpfile + ".prune.in"
     relatedness_out = f'pihat_min{threshold}'
-    qc_report.relatedness_check_report(bfile, snp_file_in, relatedness_out, threshold)
+    qc_report.relatedness_check(bfile, snp_file_in, relatedness_out, threshold)
     relatedness_out_name = relatedness_out + ".genome"
-    relat_figs = qc_plot.plot_relatedness_scatter(relatedness_out_name)
+    relat_figs = qc_plot.relatedness_scatter(relatedness_out_name)
     if relat_figs:
         missingness_out = "related_missingness"
         low_call_out = "related_low_call_rate.txt"
         qc_report.missingness_report(bfile, missingness_out)
-        selected = qc_report.relatives_low_call_rate_report(missingness_out,
+        selected = qc_report.relatives_low_call_rate(missingness_out,
                                                         relatedness_out_name,
                                                         low_call_out)
         qc_filter.relatedness_samples(bfile, low_call_out, bfile_out)
@@ -181,7 +181,7 @@ def gen_qc_samples_report(bfile: str, figures_list: list, write: bool=True,
 
     """
     het_failed_file = "heterozygosity_failed.txt"
-    sample_failed_fig = qc_report.sample_failed_report(write, snp_missingness_threshold,
+    sample_failed_fig = qc_report.samples_failed(write, snp_missingness_threshold,
                                                     imissfile, lmissfile, sexcheck_file,
                                                     het_failed_file, ibd_file)
     report_file = bfile + "_samples_qc"

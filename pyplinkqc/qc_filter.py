@@ -24,7 +24,7 @@ def run_plink(bfile: str, *flags: str, make_bed: bool=True):
 
     """
     if make_bed:
-        command = f'{plink_file} --bfile {bfile} --silent --make_bed'
+        command = f'{plink_file} --bfile {bfile} --silent --make-bed'
     else:
         command = f'{plink_file} --bfile {bfile} --silent'
     for flag in flags:
@@ -156,7 +156,7 @@ def _autosomal_snps_file(bfile: str, outfile: str):
     bim.columns = ['chrom', 'snp', 'cm', 'pos', 'a0', 'a1']
     bim['chrom'] = bim['chrom'].astype('int32')
     bim_filtered = bim.loc[(bim['chrom'] >= 1) & (bim['chrom'] <= 22)]
-    bim_filtered['snp'].to_csv(outfile, index=None, sep=' ')
+    bim_filtered['snp'].to_csv(outfile, index=False, sep=' ')
     # return bim_filtered
 
 def autosomal_snp(bfile: str, autofile: str, outfile: str):

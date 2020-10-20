@@ -143,25 +143,93 @@ def relatedness(bfile: str, indep_snp_file:str, threshold: float=0.2):
     # os.system(command)
     run_plink(bfile, f'--extract {indep_snp_file}', f'--min {threshold}', '--memory', f'--out pihat_min_{threshold}')
 
-def maf_check_report(bfile):
-    command = "./plink --bfile {} --freq --silent --out MAF_check".format(bfile)
-    os.system(command)
+def maf_check(bfile: str, outfile: str):
+    """Generate minor allele frequency check.
 
-def heterozygosity_report(bfile, outfile):
+    Key arguments:
+    --------------
+    bfile: str
+        prefix for plink binary files (.bim, .bed, .fam)
+    outfile: str
+        name of output file
+
+    Returns:
+    --------
+    """
+    # command = "./plink --bfile {} --freq --silent --out MAF_check".format(bfile)
+    run_plink(bfile, f'--freq', f'--out {outfile}')
+
+def heterozygosity(bfile: str, outfile: str):
+    """Generate heterozygosity report.
+
+    Key arguments:
+    --------------
+    bfile: str
+        prefix for plink binary files (.bim, .bed, .fam)
+    outfile: str
+        name of output file
+
+    Returns:
+    --------
+    """
     #bfile should be ld_check based on output of ld_pruning_filter function
     #this is because the heterozygosity rates should be calculated from uncorrelated regions of the genome, so we exclude retions of high LD
-    command = "./plink --bfile {}  --het --silent --out {}".format(bfile, outfile)
-    os.system(command)
+    # command = "./plink --bfile {}  --het --silent --out {}".format(bfile, outfile)
+    # os.system(command)
+    run_plink(bfile, f'--het', f'--out {outfile}')
 
-def hardy_weinberg_report(bfile):
-    command = "./plink --bfile {} --hardy".format(bfile)
-    os.system(command)
+def hardy_weinberg(bfile: str):
+    """Generate hardy weinberg report.
 
-def relatedness_check_report(bfile: str, indep_snp_file: str, outfile: str, threshold: float=0.2):
-    command = "./plink --bfile {} --extract {} --silent --genome --min {} --out {}".format(bfile, indep_snp_file, threshold, outfile)
-    os.system(command)
+    Key arguments:
+    --------------
+    bfile: str
+        prefix for plink binary files (.bim, .bed, .fam)
 
-def relatives_low_call_rate_report(imissfile: str, relatfile: str, outfile: str):
+    Returns:
+    --------
+    """
+    # command = "./plink --bfile {} --hardy".format(bfile)
+    # os.system(command)
+    run_plink(bfile, f'--hardy')
+
+def relatedness_check(bfile: str, indep_snp_file: str, outfile: str, threshold: float=0.2):
+    """Check sample relatedness.
+
+    Key arguments:
+    --------------
+    bfile: str
+        prefix for plink binary files (.bim, .bed, .fam)
+    indep_snp_file: str
+        file containing independent SNPs from uncorrelated regions of the genome
+    outfile: str
+        name of output file
+    threshold: float
+        threshold for relatnedness check
+
+    Returns:
+    --------
+    """
+    # command = "./plink --bfile {} --extract {} --silent --genome --min {} --out {}".format(bfile, indep_snp_file, threshold, outfile)
+    # os.system(command)
+    run_plink(bfile, f'--extract {indep_snp_file}', f'--genome', f'--min {threshold},
+    f'--out {outfile}')
+
+def relatives_low_call_rate(imissfile: str, relatfile: str, outfile: str):
+    """Identify related samples with low genotyping call rates.
+
+    Key arguments:
+    --------------
+    imissfile: str
+        prefix for plink generated missingness file
+    relatfile: str
+        file containing related individuals
+    outfile: str
+        name of output file
+
+    Returns:
+    --------
+    """
     imissfile = imissfile + ".imiss"
     imiss = pd.read_csv(imissfile, delimiter=" ", skipinitialspace=True)
     relat = pd.read_csv(relatfile, delimiter=" ", skipinitialspace=True)
@@ -178,13 +246,21 @@ def relatives_low_call_rate_report(imissfile: str, relatfile: str, outfile: str)
     np.savetxt(outfile, selected, delimiter=' ',  fmt='%d %s')
     return selected
 
-def write_fail_file(ids_failed, filename="failed_ids"):
-    '''Write either failed sample IDs or SNPs to two files.
+def write_fail_file(ids_failed: dict, outfile: str="failed_ids"):
+    """Write either failed sample IDs or SNPs to two files.
+
     One is a human-readable csv file, the other is a csv file intended to be read into a Pandas DataFrame.
-    :param ids_failed: dictionary that contains the QC checks and the corresponding failed ids.
-    :param filename: name of the file to be written to
-    >>> write_fail_file(ids_failed, failed_ids)
-    '''
+
+    Key arguments:
+    --------------
+    ids_failed: dict
+        dictionary containing IDs of samples that failed QC
+    outfile: str
+        name of output file
+
+    Returns:
+    --------
+    """
     hr = filename + "_hr.csv"
     pr = filename + "_pr.csv"
     with open(hr, "w") as f:
@@ -192,20 +268,53 @@ def write_fail_file(ids_failed, filename="failed_ids"):
             f.write(str(k) + ": " + str(v) + "\n")
     pd.DataFrame.from_dict(data=ids_failed, orient='index').to_csv(pr, header=True)
 
-def save_pdf(infile, plots):
-    ''' Write a list of matplotlib Figure objects to a pdf file in the current working directory.
-    :param infile: prefix of the plink input files
-    :param plots: list of Figure objects to written to pdf file
-    >>> save_pdf("HapMap_3_r3_1", figures)
-    "HapMap_3_r3_1_qc_report.pdf"'''
+def save_pdf(outfile: str, figs: list):
+    """Write a list of matplotlib Figure objects to a pdf file in the current working directory.
 
-    title = infile + "_report.pdf"
+
+    Key arguments:
+    --------------
+    outfile: str
+        name to write PDF file to
+    figs: list
+        list of Figure objects to be written to PDF file
+
+    Returns:
+    --------
+    """
+
+    title = outfile + "_report.pdf"
 
     with PdfPages(title) as pdf:
-        for plot in plots:
+        for plot in figs:
             pdf.savefig(plot)
 
-def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_threshold: float=0.01, hwe_threshold: float=1e-6, lmiss_file: str="plink.lmiss", maf_file: str="MAF_check.frq", hwe_file: str="plink.hwe"):
+def snps_failed(write: bool=False, miss_threshold: float=0.2, maf_threshold: float=0.01, hwe_threshold: float=1e-6, lmiss_file: str="plink.lmiss", maf_file: str="MAF_check.frq", hwe_file: str="plink.hwe"):
+    """Write report for SNPs that failed QC.
+
+    Key arguments:
+    --------------
+    write: bool
+        determines whether to write out failed sample ids
+    snp_missingness_threshold: float
+        threshold for filtering snps with high missingness rates
+    maf_threshold: float
+        threshold for filtering SNPs with high MAF
+    hwe_threshold: float
+        threshold used for HWE test
+    lmissfile: str
+        file containing SNPs with high missingness rates
+        (generated by check_snps_missingness function)
+    maf_file: str
+        file containing SNPs with outlying MAF
+        (generated by check_maf function)
+    hwe_file: str
+        file containing SNPs with outlying HWE
+        (generated by check_hwe function)
+
+    Returns:
+    --------
+    """
     snps = {}
     ids_list = []
 
@@ -256,7 +365,33 @@ def snps_failed_report(write: bool=False, miss_threshold: float=0.2, maf_thresho
     return fig
 
 
-def sample_failed_report(write=True, miss_threshold=0.2, imiss_file="plink.imiss", lmiss_file="plink.lmiss", sexcheck_file="plink.sexcheck", het_failed_file="heterozygosity_failed.txt", ibd_file="pihat_min0.2.genome"):
+def samples_failed(write: bool=True, miss_threshold: float=0.2, imiss_file: str="plink.imiss", lmiss_file: str="plink.lmiss", sexcheck_file: str="plink.sexcheck", het_failed_file: str="heterozygosity_failed.txt", ibd_file: str="pihat_min0.2.genome"):
+    """Write report for samples that failed QC.
+
+    Key arguments:
+    --------------
+    write: bool
+        determines whether to write out failed sample ids
+    snp_missingness_threshold: float
+        threshold for filtering snps with high missingness rates
+    imissfile: str
+        file containing samples with high missingness rates
+        (generated by check_snps_missingness function)
+    lmissfile: str
+        file containing snps with high missingness rates
+        (generated by check_snp_missingness function)
+    sexcheckfile: str
+        file containing samples that have sex discrepancies
+        (generated by check_sex_discrepancy function)
+    ibd_threshold: float
+        threshold for removing samples with high ibd
+    ibdfile: str
+        file containing ibc coefficients for samples
+        (generated by check_cryptic_relatedness function)
+
+    Returns:
+    --------
+    """
     ids = {}
     ids_list = []
 

@@ -72,11 +72,11 @@ def check_maf(bfile: str="snp_missingness_filtered", get_autosomal: bool=False,
         qc_filter.select_autosomal_snp(bfile=bfile, auto_file=auto_out,
                                     outfile=bfile_tmp)
         bfile = bfile_tmp
-    qc_report.maf_check_report(bfile=bfile)
-    maf_check_figs = qc_plot.plot_maf_hist(file=maf_check)
+    qc_report.maf_check(bfile=bfile, outfile="MAF_check")
+    maf_check_figs = qc_plot.maf_hist(file=maf_check)
     maf_filtered = qc_filter.maf_filter(bfile=bfile, threshold=maf_threshold,
                                      outfile=bfile_out)
-    maf_drop_figs = qc_plot.plot_maf_dropped_hist()
+    maf_drop_figs = qc_plot.maf_dropped_hist()
     return maf_check_figs, maf_drop_figs
 
 def check_hwe(bfile: str="maf_filtered", hwe_check: str="plink.hwe",
@@ -102,9 +102,9 @@ def check_hwe(bfile: str="maf_filtered", hwe_check: str="plink.hwe",
     hwe_figs: object
         matplotlib figure object showing SNP HWE results
     """
-    qc_report.hardy_weinberg_report(bfile=bfile)
-    hwe_figs = qc_plot.plot_hwe_hist(file=hwe_check, threshold=hwe_threshold)
-    qc_filter.hardy_weinberg_filter(bfile=bfile, threshold=hwe_threshold,
+    qc_report.hardy_weinberg(bfile=bfile)
+    hwe_figs = qc_plot.hwe_hist(file=hwe_check, threshold=hwe_threshold)
+    qc_filter.hardy_weinberg_test(bfile=bfile, threshold=hwe_threshold,
                                  control=control, outfile=bfile_out)
     return hwe_figs
 
@@ -144,7 +144,7 @@ def snps_failed_gen_report(bfile: str, figures_list: list, write: bool=False,
     Returns:
     --------
     """
-    snps_failed_fig = qc_report.snps_failed_report(miss_threshold=snp_missingness_threshold,
+    snps_failed_fig = qc_report.snps_failed(miss_threshold=snp_missingness_threshold,
                                                    maf_threshold=maf_threshold,
                                                    hwe_threshold=hwe_threshold,
                                                    lmiss_file=lmiss_file,
