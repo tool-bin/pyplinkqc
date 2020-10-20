@@ -1,13 +1,20 @@
-# pygen
-python toolkit for running quality control processing and association analysis on genotype call data.
+# pyplinkqc
+Python package for performing quality control (QC) steps and association analysis on genotype call data. The package contains modules that function as wrappers around the **PLINK** (v1.9) command-line tool. In order to download the PLINK executable, please visit the following website, and download the correct version for your operating system:
+
+https://www.cog-genomics.org/plink/1.9/
+
+
+### Installation
+
+pyplinkqc can be installed using any of the following ways:
 
 __install using pip for python 3:__
 
-`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pygen.git`
+`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git`
 
 __install from a custom branch:__
 
-`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pygen.git@<branch>`
+`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git@<branch>`
 
 __install by cloning branch and running setup.py:__
 
@@ -17,60 +24,91 @@ __install by cloning branch and running setup.py:__
 
 ### Usage
 
-This module has two submodules:
-1. quality_control
-2. association
+Once pylinkqc and PLINK have been installed, you can import pyplinkqc within existing python scripts and start using it:
+
+  import pyplinkqc
+
+This package has several modules:
+
+1. qc_snps.py - functions to perform QC steps at SNP-level
+2. qc_samples.py - functions to perform QC steps at individuals/sample-level
+3. qc_filter.py - functions to filter genotype call data
+4. qc_report.py - functions to report on QC results
+5. qc_plot.py - functions to create plots of QC results
+6. association.py - function to perform genome-wide association studies
+
+The following sections outline the intended usage of each of the modules, along with examples for how to run the functions using the example dataset provided in the "examples" directory. Feel free to follow along using your favourite IDE.
 
 #### Quality control
 
-This submodule is split into two classes:
-1. QcSnps
-2. QcSamples
+Modules 1 to 5 listed above can be used to perform common quality control procedures on genotype call data, as well as report the results. Quality control procedures can be performed on on a SNP-level, an indvidua/sample-level, or both.
 
-Each class expects PLINK binary files as input (bfile - see below). The user should specify the path and name of binary file prefix (e.g HapMap_3_r3_1) as input to the functions, as well as some thresholds where appropriate. Most functions output a figure to analyse the results of the QC step.
+Examples of running quality control steps at SNP-level are given below.
 
-In order to import these classes, run the following commands:
+```
+from pylinkqc import qc_snps
 
-`$ from pygen import quality_control`
+bfile_path = "examples/HapMap_3_r3_1"
 
-Instantiate the classes to run the functions within each class on PLINK data:
+snp_missingness_cutoff=0.2
+get_autosomal=False
+maf_threshold=0.01
+hwe_threshold=1e-10
 
-`$ qc_snps = quality_control.QcSnps()`
-`$ qc_samples = quality_control.QcSamples()`
+snp_missing_fig = qc_snps.check_snp_missingness(bfile_path)
 
-Run QC steps using the available functions:
+maf_check, maf_drop = qc_snps.check_maf(bfile="snp_missingness_filtered", get_autosomal=get_autosomal, maf_threshold=maf_threshold)
 
-`$ snps_missing_fig = qc_samples.check_snp_missingness(bfile=binary_file_prefix, snp_missingness_cutoff=0.01)`
+hwe_check = qc_snps.check_hwe(bfile="maf_filtered", hwe_threshold=hwe_threshold)
 
-An example script that implements a QC pipeline is given in the "examples" directory.
+qc_snps.snps_failed_gen_report(bfile=bfile, snp_missingness_cutoff=snp_missingness_cutoff, maf_threshold=maf_threshold, hwe_threshold=hwe_threshold)
+```
+
+As shown from the code snippet above, each function that performs a QC step expects the path and name of PLINK binary file prefix (e.g HapMap_3_r3_1).
+
+Screenshots of the generated QC report are shown below:
+
+An example script that implements a full QC pipeline at both SNP and sample level is given in the "examples" directory.
 
 #### Assocation
 
-This submodule implements basic association testing for GWAS studies.
+This module implements basic association testing for GWAS studies. The module implements the following association tests:
 
-### Testing
-An example for a testable function can be found in `exampleTest.py`. This function enables type checking as well as docstring testing.
+1. chi-squared allelic association tests (see [here](https://zzz.bwh.harvard.edu/plink/anal.shtml#cc) for further information)
+2. linear or logistic regession tests (see [here](https://zzz.bwh.harvard.edu/plink/anal.shtml#glm) for further information)
 
-#### Testing for correctness using the docstring
-Each function should include a docstring that contains information about all in- and output variables as well as a test that should pass.
-
-From the command line, navigate to the root directory (`pygen`) and run:
+An example of performing a GWAS using a logistic regression test is shown below
 ```
-pytest --doctest-modules
-```
+from pyplinkqc import association
 
-#### Testing typing
-From the command line, navigate to the root directory (`pygen`) and run:
-```
-mypy pygen
-```
+bfile_path = "examples/HapMap_3_r3_1"
 
+association.perform_cov_assoc(bfile=bfile_path, outfile="log_association", type="log")
+```
+The above snippet will run the association analysis on the provided PLINK binary files and save the results in the "log_association.assoc.log" file.
+
+An example script that implements a full QC and association pipeline is given the "examples" directory.
 
 ### Contributing
-* Clone the repository
-* Checkout a new branch: `git checkout -b my-new-function` (where `my-new-function` is whatever meaningful branch name you come up with)
-* Start working on that branch and test, and add, and commit until the new function is ready for review
-* If you're creating a new file, don't forget to include it in `pygen/__init__.py`. And if your function has a dependency, include it in `setup.py`.
-* Push the branch to the repo: `git push --set-upstream origin my-new-function` (where `my-new-function` is whatever meaningful branch name you came up with)
-* From the master branch on github, click on `create Pull Request` and nominate a reviewer
-* As a reviewer... review, maybe test. Then comment on the pull request or accept it.
+
+As a collaborator, please create a branch and create a pull request when ready. To contribute otherwise, please fork directory and create pull requests. Github issues are also welcome.
+
+### Citation
+
+If you've found this tool useful in your work, please use the following citations:
+
+pyplinkqc citation:
+
+**pyplinkqc: a Python package for genetic studies**
+Nathalie Willems, Isabell Kiral, Benjamin Goudey
+
+PLINK citation:
+
+Package:     PLINK (1.9)
+Author:      Shaun Purcell
+URL:         http://pngu.mgh.harvard.edu/purcell/plink/
+
+Purcell S, Neale B, Todd-Brown K, Thomas L, Ferreira MAR,
+Bender D, Maller J, Sklar P, de Bakker PIW, Daly MJ & Sham PC (2007)
+PLINK: a toolset for whole-genome association and population-based
+linkage analysis. American Journal of Human Genetics, 81.
