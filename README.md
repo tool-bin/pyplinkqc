@@ -78,13 +78,13 @@ This module implements basic association testing for GWAS studies. The module im
 2. linear or logistic regession tests (see [here](https://zzz.bwh.harvard.edu/plink/anal.shtml#glm) for further information)
 
 An example of performing a GWAS using a logistic regression test is shown below
+```
+from pyplinkqc import association
 
-  from pyplinkqc import association
+bfile_path = "examples/HapMap_3_r3_1"
 
-  bfile_path = "examples/HapMap_3_r3_1"
-
-  association.perform_cov_assoc(bfile=bfile_path, outfile="log_association", type="log")
-
+association.perform_cov_assoc(bfile=bfile_path, outfile="log_association", type="log")
+```
 The above snippet will run the association analysis on the provided PLINK binary files and save the results in the "log_association.assoc.log" file.
 
 An example script that implements a full QC and association pipeline is given the "examples" directory.
