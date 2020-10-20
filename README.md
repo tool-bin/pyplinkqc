@@ -10,11 +10,11 @@ pyplinkqc can be installed using any of the following ways:
 
 __install using pip for python 3:__
 
-`$ pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git`
+`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git`
 
 __install from a custom branch:__
 
-`$ pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git@<branch>`
+`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git@<branch>`
 
 __install by cloning branch and running setup.py:__
 
@@ -45,22 +45,24 @@ Modules 1 to 5 listed above can be used to perform common quality control proced
 
 Examples of running quality control steps at SNP-level are given below.
 
-  `from pylinkqc import qc_snps
+```
+from pylinkqc import qc_snps
 
-  bfile_path = "examples/HapMap_3_r3_1"
+bfile_path = "examples/HapMap_3_r3_1"
 
-  snp_missingness_cutoff=0.2
-  get_autosomal=False
-  maf_threshold=0.01
-  hwe_threshold=1e-10
+snp_missingness_cutoff=0.2
+get_autosomal=False
+maf_threshold=0.01
+hwe_threshold=1e-10
 
-  snp_missing_fig = qc_snps.check_snp_missingness(bfile_path)
+snp_missing_fig = qc_snps.check_snp_missingness(bfile_path)
 
-  maf_check, maf_drop = qc_snps.check_maf(bfile="snp_missingness_filtered", get_autosomal=get_autosomal, maf_threshold=maf_threshold)
+maf_check, maf_drop = qc_snps.check_maf(bfile="snp_missingness_filtered", get_autosomal=get_autosomal, maf_threshold=maf_threshold)
 
-  hwe_check = qc_snps.check_hwe(bfile="maf_filtered", hwe_threshold=hwe_threshold)
+hwe_check = qc_snps.check_hwe(bfile="maf_filtered", hwe_threshold=hwe_threshold)
 
-  qc_snps.snps_failed_gen_report(bfile=bfile, snp_missingness_cutoff=snp_missingness_cutoff, maf_threshold=maf_threshold, hwe_threshold=hwe_threshold)`
+qc_snps.snps_failed_gen_report(bfile=bfile, snp_missingness_cutoff=snp_missingness_cutoff, maf_threshold=maf_threshold, hwe_threshold=hwe_threshold)
+```
 
 As shown from the code snippet above, each function that performs a QC step expects the path and name of PLINK binary file prefix (e.g HapMap_3_r3_1).
 
