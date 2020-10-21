@@ -2,7 +2,7 @@
 Python package for performing quality control (QC) steps and association analysis on genotype call data. The package contains modules that function as wrappers around the **PLINK** (v1.9) command-line tool. In order to use this package, you will need to download the PLINK executable. Please visit the following website, and download the correct version for your operating system:
 
 https://www.cog-genomics.org/plink/1.9/
-
+https://zzz.bwh.harvard.edu/plink/download.shtml
 
 ### Installation
 
