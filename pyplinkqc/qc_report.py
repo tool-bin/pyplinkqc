@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 rcParams.update({'figure.autolayout': True})
 from matplotlib.backends.backend_pdf import PdfPages
-from .qc_filter import run_plink
+from .run_plink import run_plink
 
 # analysis functions
 def calculate_missingness(df: pd.DataFrame, column: str, threshold: float):

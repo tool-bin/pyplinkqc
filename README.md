@@ -1,20 +1,20 @@
 # pyplinkqc
-Python package for performing quality control (QC) steps and association analysis on genotype call data. The package contains modules that function as wrappers around the **PLINK** (v1.9) command-line tool. In order to download the PLINK executable, please visit the following website, and download the correct version for your operating system:
+Python package for performing quality control (QC) steps and association analysis on genotype call data. The package contains modules that function as wrappers around the **PLINK** (v1.9) command-line tool. In order to use this package, you will need to download the PLINK executable. Please visit the following website, and download the correct version for your operating system:
 
 https://www.cog-genomics.org/plink/1.9/
 
 
 ### Installation
 
-pyplinkqc can be installed using any of the following ways:
+pyplinkqc can be installed by running the following commands in the terminal:
 
-__install using pip for python 3:__
+<!-- __install using pip for python 3:__
 
 `pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git`
 
-__install from a custom branch:__
+__install from a specific branch:__
 
-`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git@<branch>`
+`pip3 install git+ssh://git@github.ibm.com/aur-genomics/pyplinkqc.git@<branch>` -->
 
 __install by cloning branch and running setup.py:__
 
@@ -22,11 +22,29 @@ __install by cloning branch and running setup.py:__
 
 `$ python setup.py install`
 
+__NB__: We highly recommend the use of a virtual environment when installing the pyplinkqc package. Conda is a great place to start: https://docs.conda.io/projects/conda/en/latest/user-guide/index.html.
+
 ### Usage
 
-Once pylinkqc and PLINK have been installed, you can import pyplinkqc within existing python scripts and start using it:
+Once pylinkqc and PLINK have been installed, you will need to configure the path to the PLINK executable. This can be done by updating the "plink.conf" file in the parent directory of this package. The path is specified under the "[PATHS]" section of the configuration file:
 
-  import pyplinkqc
+`[PATHS]
+plink_path="plink"
+`
+
+You can update the value of "plink_path" to the appropriate path to your PLINK executable. Once this is done, the package will automatically parse the configuration file, and set the correct path to the executable.
+
+You can now import pyplinkqc within existing python scripts and start using it:
+
+```
+import pyplinkqc
+bfile_path = "examples/HapMap_3_r3_1"
+snp_missing_fig = qc_snps.check_snp_missingness(bfile_path)
+```
+
+As you can see, the package assumes the use of PLINK binary files to store genetic data. Examples of such files can be found in the "examples" directory of this repository.
+
+###  Modules
 
 This package has several modules:
 
