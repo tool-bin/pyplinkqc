@@ -86,6 +86,10 @@ As shown from the code snippet above, each function that performs a QC step expe
 
 Screenshots of the generated QC report are shown below:
 
+![SNPS QC 1](images/snps_qc1.png)
+![SNPS QC 2](images/snps_qc2.png)
+<!-- Format: ![Alt Text](url) -->
+
 An example script that implements a full QC pipeline at both SNP and sample level is given in the "examples" directory.
 
 #### Assocation

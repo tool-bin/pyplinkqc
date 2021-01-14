@@ -1,3 +1,14 @@
+# plink files
+**/*pgen
+**/*psam
+**/*pvar
+**/*bed
+**/*bim
+**/*fam
+**/*vmiss
+**/*imiss
+**/*freq
+**/*pdf
 .ipynb_checkpoints
 *.DS_Store
 **/*.ipynb_checkpoints/
